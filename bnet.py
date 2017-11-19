@@ -134,7 +134,7 @@ def baysian_network(input_variables):
         reset_variable = input_variables[:]
         all_probability = get_all_probabilities(input_variables,missing_variables_combination,reset_variable)
         probability = calculate_probability(all_probability)
-        print probability
+        return probability
 
 
 
@@ -161,16 +161,37 @@ Mt = 0.70
 Mf = 0.01
 
 add_variables_to_a_list = []
-
+position_of_given = 0
 for i in range(0,len(sys.argv)):
     if i == 0:
         pass
+
+    elif sys.argv[i] == "given":
+        position_of_given = i
+
     else:
         #Adding all the arguments from shell
         add_variables_to_a_list.append(sys.argv[i])
 
 #This should give the final computed probability from the baysian network
-compute_probability_from_baysian_network = baysian_network(add_variables_to_a_list)
+compute_probability_from_baysian_network_for_numerator = baysian_network(add_variables_to_a_list)
+print "This is the numerator"
+print compute_probability_from_baysian_network_for_numerator
+
+if position_of_given == 0:
+    print "No denominator"
+else:
+    pos = 0
+    denominator_list = []
+    for i in range(position_of_given+1,len(sys.argv)):
+        denominator_list.append(sys.argv[i])
+    compute_probability_from_baysian_network_for_denominator = baysian_network(denominator_list)
+    print "This is the denominator"
+    print compute_probability_from_baysian_network_for_denominator
+
+
+print "Final probability is = "+str(compute_probability_from_baysian_network_for_numerator/compute_probability_from_baysian_network_for_denominator)
+
 
 
 
